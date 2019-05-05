@@ -6,14 +6,40 @@ var {
 
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
-  type Query {
-    hello: String
-    rollDice(numDice: Int!, numSides: Int): [Int]
-    quoteOfTheDay: String
-    random: Float!
-    rollThreeDice: [Int]
-  }
+    type RandomDie {
+        numSides: Int!
+        rollOnce: Int!
+        roll(numRolls: Int!): [Int]
+    }
+
+    type Query {
+        hello: String
+        rollDice(numDice: Int!, numSides: Int): [Int]
+        quoteOfTheDay: String
+        random: Float!
+        rollThreeDice: [Int]
+        getDie(numSides: Int): RandomDie
+    }
 `);
+
+// this class implements the RandomDie GraphQL type
+class RandomDie {
+    constructor(numSides) {
+        this.numSides = numSides
+    }
+
+    rollOnce() {
+        return 1 + Math.floor(Math.random() * this.numSides);
+    }
+
+    roll({ numRolls }) {
+        var output = []
+        for (var i = 0; i < numRolls; i++) {
+            output.push(this.rollOnce())
+        }
+        return output;
+    }
+}
 
 // The root provides a resolver function for each API endpoint
 var root = {
@@ -37,6 +63,9 @@ var root = {
         // 引数を受け取らない場合は_(アンダースコア)でいけるのか
         return [1, 2, 3].map(_ => 1 + Math.floor(Math.random() * 6))
     },
+    getDie: ({numSides}) => {
+        return new RandomDie(numSides || 6)
+    }
 };
 
 var app = express();
