@@ -9,6 +9,9 @@ var schema = buildSchema(`
   type Query {
     hello: String
     rollDice(numDice: Int!, numSides: Int): [Int]
+    quoteOfTheDay: String
+    random: Float!
+    rollThreeDice: [Int]
   }
 `);
 
@@ -23,6 +26,16 @@ var root = {
             output.push(1 + Math.floor(Math.random() * (numSides || 6)));
         }
         return output;
+    },
+    quoteOfTheDay: () => {
+        return Math.random() < 0.5 ? 'Take is easy' : 'Salvation lies within';
+    },
+    random: () => {
+        return Math.random()
+    },
+    rollThreeDice: () => {
+        // 引数を受け取らない場合は_(アンダースコア)でいけるのか
+        return [1, 2, 3].map(_ => 1 + Math.floor(Math.random() * 6))
     },
 };
 
