@@ -39,7 +39,7 @@ var root = {
         if (!fakeDatabase[id]) {
             throw new Error('no message exists with id ' + id);
         }
-        return new Messsage(id, fakeDatabase[id]);
+        return new Message(id, fakeDatabase[id]);
     },
     createMessage: ({ input }) => {
         var id = require('crypto').randomBytes(10).toString('hex');
