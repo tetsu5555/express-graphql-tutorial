@@ -13,3 +13,26 @@ object typeを返すAPIに対してGraphQLのqueryを発行する時は、GraphQ
   }
 }
 ```
+
+## server2.js
+
+```
+{
+  getMessage(id: "ここにidを入れる"){
+    id
+    content
+    author
+  }
+}
+
+mutation {
+  createMessage(input: {
+    author: "andy",
+    content: "hope is good thing"
+  }){
+    id
+    content
+    author
+	}
+}
+```
